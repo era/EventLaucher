@@ -10,18 +10,18 @@ config.yaml
 
 my_cool_queue:
   -
-    rule: ".event.type eq 'error'"
+    rule: ".event.type eq error"
     exec: "python3 slack_message.py ${event}"
   -
-    rule: ".event.type eq 'success'"
+    rule: ".event.type eq success"
     exec: "python3 send_email_boss.py ${event}"
 
 another_queue:
   -
-    rule: ".event.type eq 'error'"
+    rule: ".event.type eq error"
     exec: "python3 slack_message.py ${event}"
   -
-    rule: ".event.type eq 'success'"
+    rule: ".event.type eq success"
     exec: "python3 send_email_boss.py ${event}"
 
 ```
