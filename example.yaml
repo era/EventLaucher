@@ -1,0 +1,15 @@
+my_cool_queue:
+    -
+        rule: ".event.type eq error"
+        exec: "echo 1"
+    -
+        rule: ".event.type eq success"
+        exec: "echo 1"
+
+another_queue:
+    -
+        rule: ".event.type eq error"
+        exec: "echo ${event} > /tmp/worked"
+    -
+        rule: ".event.type eq success"
+        exec: "echo 1"

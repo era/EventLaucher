@@ -1,10 +1,8 @@
 use core::num::ParseIntError;
-use serde_json::{self, json};
 use jq_rs;
 use regex::Regex;
 
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Op {
     Eq,
     NotEq,
@@ -12,8 +10,7 @@ pub enum Op {
     SmallerThan
 } 
 
-#[derive(Debug)]
-#[derive(PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Rule {
     json_element: String,
     op: Op,

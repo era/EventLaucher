@@ -1,10 +1,13 @@
 # EventLaucher
-:rocket: Rust software that consumes a queue and lauches any script to handle the data. Everything customisable by a config file.
+:rocket: Rust software that consumes a rabbitmq queue and launches any script to handle the data. Everything is customisable by a yaml config file.
 
+It was made for my personal usage (and for me to learn Rust). Before using, read the code. If you want to improve anything send a PR, or just open an issue :).
 
-## Draft idea
+I use it together with https://github.com/era/malleable-checker to send me a message when checkers fail.
 
-config.yaml
+## How it works
+
+You need a yaml configuration file like:
 
 ```yaml
 
@@ -26,24 +29,16 @@ another_queue:
 
 ```
 
-Special variables are:
+Rule works like: `{json_path} op {value}`, where `json_path` follows `jq` syntax, `op`can be `eq`, `!eq`, `>` or `<`. and `value` can be any string or numeric value.
 
-- `${event}`: the exactly event from the queue.
-- `${received_at}`: timestamp
+If rule results in true, the command defined at `exec` is executed. If you want to pass the json event for the command you can by using `${event}`.
 
-The idea of the rules is to support queues which messages are JSON. The syntax is similar to `jq`
+To execute just cargo build and:
 
-- Parse rules
-  - {event} op {target}
-  	- op can be eq, !eq, >, <
-	- target is either a string or a number
-	- \$(\.{1}[a-z0-9]{1,}){0,} (eq|!eq|>|<) ([0-9a-z ]){1,}
-	- with groups: (\$(\.{1}[a-z0-9]{1,}){0,}) (eq|!eq|>|<) ([0-9a-z ]{1,})
-		- group 1=json, group2=garbage, group3=op, group4=target
-- Consume Queues
-- Exec command or log error
+`target/event_launcher example.yaml amqp://localhost`
 
+Where example.yaml is the configuration yaml and the second argument is the RabbitMQ URL to connect. If you need to pass a password on the URL itself, you will need to modify the code to avoid passing it as argument (since your password will be at `history`).
 
 ## Mac
-To build you need: 
+To build you need `jq` installed (you probably have) and setup `JQ_LIB_DIR`: 
 `export JQ_LIB_DIR=/usr/local/bin/jq`
